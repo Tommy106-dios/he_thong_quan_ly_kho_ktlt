@@ -1,0 +1,20 @@
+[
+    {
+        "id": "SUP01",
+        "name": "Công ty Cổ phần Thép Hòa Phát",
+        "phone": "0123456789",
+        "address": "Hà Nội"
+    },
+    {
+        "id": "SUP02",
+        "name": "Tổng Công ty Xi măng Việt Nam",
+        "phone": "0987654321",
+        "address": "TP. HCM"
+    },
+    {
+        "id": "SUP03",
+        "name": "Nhà máy Gạch Tuynel Bình Dương",
+        "phone": "0112233445",
+        "address": "Bình Dương"
+    }
+]

@@ -1,0 +1,17 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Databases
+data/*.json
+!data/products.json
+!data/transactions.json
+!data/transaction_details.json
+!data/categories.json
+!data/suppliers.json
+!data/users.json
+
+# IDEs
+.vscode/
+.idea/

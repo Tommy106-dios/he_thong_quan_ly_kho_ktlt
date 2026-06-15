@@ -1,0 +1,38 @@
+[
+    {
+        "id": "SP001",
+        "name": "Thép Hòa Phát D10",
+        "categoryId": "CAT01",
+        "price": 15500.0,
+        "stockQuantity": 120,
+        "minStockLevel": 50,
+        "maxStockLevel": 500
+    },
+    {
+        "id": "SP002",
+        "name": "Xi măng Vicem Hà Tiên",
+        "categoryId": "CAT01",
+        "price": 89000.0,
+        "stockQuantity": 25,
+        "minStockLevel": 40,
+        "maxStockLevel": 300
+    },
+    {
+        "id": "SP003",
+        "name": "Gạch tuynel 2 lỗ Bình Dương",
+        "categoryId": "CAT01",
+        "price": 1200.0,
+        "stockQuantity": 2400,
+        "minStockLevel": 500,
+        "maxStockLevel": 2000
+    },
+    {
+        "id": "gkj",
+        "name": "gjhkkjg",
+        "categoryId": "gyjhg",
+        "price": 100000.0,
+        "stockQuantity": 67,
+        "minStockLevel": 12,
+        "maxStockLevel": 89
+    }
+]

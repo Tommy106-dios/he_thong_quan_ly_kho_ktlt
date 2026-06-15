@@ -1,0 +1,20 @@
+[
+    {
+        "transactionId": "TX001",
+        "productId": "SP001",
+        "quantity": 100,
+        "unitPrice": 15000.0
+    },
+    {
+        "transactionId": "TX002",
+        "productId": "SP001",
+        "quantity": 50,
+        "unitPrice": 15500.0
+    },
+    {
+        "transactionId": "PN1001",
+        "productId": "gkj",
+        "quantity": 67,
+        "unitPrice": 100000.0
+    }
+]

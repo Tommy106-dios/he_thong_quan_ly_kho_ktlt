@@ -1,0 +1,16 @@
+[
+    {
+        "id": "US001",
+        "username": "admin",
+        "password": "123",
+        "fullName": "Nguyễn Văn A",
+        "role": "Admin"
+    },
+    {
+        "id": "US002",
+        "username": "kho",
+        "password": "123",
+        "fullName": "Lê Văn B",
+        "role": "NhanVienKho"
+    }
+]

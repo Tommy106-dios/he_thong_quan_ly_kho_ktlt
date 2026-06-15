@@ -1,0 +1,17 @@
+[
+    {
+        "id": "CAT01",
+        "name": "Vật liệu",
+        "description": "Thép, xi măng, gạch cát"
+    },
+    {
+        "id": "CAT02",
+        "name": "Hóa chất",
+        "description": "Sơn, dung môi"
+    },
+    {
+        "id": "CAT03",
+        "name": "Phụ kiện",
+        "description": "Ống nước, đai ốc"
+    }
+]
