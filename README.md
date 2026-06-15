@@ -41,44 +41,42 @@
 ```text
 warehouse_management/
 │
-├── docs/                                 # Tài liệu dự án
-│   ├── Hệ thống quản lý kho hàng.docx    # Tài liệu đặc tả yêu cầu gốc
+├── docs/
+│   ├── Hệ thống quản lý kho hàng.docx    # Nơi lưu tài liệu tham chiếu gốc của dự án
 │   └── Báo cáo Hệ thống WMS.docx         # Báo cáo BTL Kỹ thuật Lập trình (Python)
 │
-├── data/                                 # Cơ sở dữ liệu JSON vật lý độc lập
-│   ├── users.json                        # Danh sách tài khoản nhân viên
-│   ├── categories.json                   # Danh mục hàng hóa
-│   ├── suppliers.json                    # Danh sách nhà cung cấp
-│   ├── products.json                     # Thông tin sản phẩm & số lượng tồn kho
-│   ├── transactions.json                 # Phiếu giao dịch nhập xuất
-│   └── transaction_details.json          # Chi tiết dòng hàng giao dịch
-│
-├── src/                                  # Mã nguồn chính của ứng dụng
+├── src/
 │   │
-│   ├── models/                           # 1. Tầng Thực thể Hướng đối tượng (OOP Models)
+│   ├── models/                           # Chứa định nghĩa các lớp (class) thực thể
 │   │   ├── __init__.py
-│   │   ├── user.py, category.py, supplier.py
-│   │   ├── product.py
-│   │   └── transaction.py, transaction_detail.py
+│   │   ├── user.py                       # Thực thể User
+│   │   ├── category.py                   # Thực thể Danh mục (Mới bổ sung)
+│   │   ├── supplier.py                   # Thực thể Nhà cung cấp
+│   │   ├── product.py                    # Thực thể Sản phẩm
+│   │   ├── warehouse.py                  # Thực thể Kho
+│   │   ├── transaction.py                # Thực thể Giao dịch (Đã tích hợp trường Ghi chú/Người nhận)
+│   │   └── transaction_detail.py         # Thực thể Chi tiết giao dịch (Mới bổ sung)
 │   │
-│   ├── services/                         # 2. Tầng Nghiệp vụ cốt lõi (Core Services)
+│   ├── services/                         # Chứa logic xử lý 3 NGHIỆP VỤ CHÍNH
 │   │   ├── __init__.py
-│   │   ├── inbound_service.py            # Logic nghiệp vụ nhập kho
-│   │   ├── outbound_service.py           # Logic nghiệp vụ xuất kho
-│   │   └── management_service.py         # Logic cảnh báo, tìm kiếm, XNT, lịch sử
+│   │   ├── inbound_service.py            # Chức năng NHẬP KHO: Thêm hàng, lưu lịch sử...
+│   │   ├── management_service.py         # Chức năng QUẢN LÝ: Cảnh báo, tìm kiếm, báo cáo...
+│   │   └── outbound_service.py           # Chức năng XUẤT KHO: Xuất hàng, lưu lịch sử...
 │   │
-│   ├── views/                            # 3. Tầng Hiển thị (Console UI Views)
+│   ├── views/                            # Chuyên xử lý đầu vào/đầu ra trên màn hình Console
 │   │   ├── __init__.py
-│   │   └── console_menu.py               # Xử lý nhập xuất console & hiển thị dòng "|"
+│   │   ├── console_menu.py               # Hiển thị các danh mục menu (1. Nhập kho, 2. Xuất kho...)
+│   │   └── printer_util.py               # Tiện ích kẻ bảng in danh sách sản phẩm, in phiếu nhập/xuất
 │   │
-│   ├── data_access/                      # 4. Tầng Truy xuất tệp vật lý (Data Access)
+│   ├── data_access/                      # (Tùy chọn) Tách riêng phần đọc/ghi dữ liệu
 │   │   ├── __init__.py
-│   │   └── file_handler.py               # Quản lý load/save tệp tin JSON
+│   │   └── file_handler.py               # Xử lý lưu các danh sách đối tượng (List/Array) xuống file
 │   │
-│   └── main.py                           # Tệp khởi chạy chính của hệ thống
-│
-├── tests/                                # Kịch bản kiểm thử tự động
-│   └── verify_refactored_logic.py        # File test chứng thực 20/20 luồng nghiệp vụ
+│   └── main.py                           # File gốc chứa vòng lặp vô hạn (while True) khởi chạy ứng dụng
+│   
+├── data/                                 # Thư mục chứa các file cơ sở dữ liệu vật lý (nếu lưu file)
+│   ├── products.json
+│   └── transactions.json
 │
 ├── .gitignore                            # Cấu hình bỏ qua tệp tin rác của Git
 └── README.md                             # Tài liệu hướng dẫn này
