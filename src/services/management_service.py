@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from ..models import Category
 
 class ManagementService:
@@ -69,6 +70,21 @@ class ManagementService:
 
     # 6. Báo cáo Xuất - Nhập - Tồn (XNT)
     def calculate_xnt(self, start_date_str, end_date_str):
+        # Kiểm tra định dạng ngày không hợp lệ
+        try:
+            start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("Ngày bắt đầu không hợp lệ hoặc không đúng định dạng YYYY-MM-DD.")
+
+        try:
+            end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError("Ngày kết thúc không hợp lệ hoặc không đúng định dạng YYYY-MM-DD.")
+
+        # Kiểm tra ngày bắt đầu không lớn hơn ngày kết thúc
+        if start_date > end_date:
+            raise ValueError("Ngày bắt đầu không được lớn hơn ngày kết thúc.")
+
         # Chuẩn hóa ngày nhập dạng YYYY-MM-DD thành mốc ISO
         start_iso = start_date_str + "T00:00:00"
         end_iso = end_date_str + "T23:59:59"

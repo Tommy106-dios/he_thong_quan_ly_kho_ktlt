@@ -34,5 +34,95 @@
         "stockQuantity": 67,
         "minStockLevel": 12,
         "maxStockLevel": 89
+    },
+    {
+        "id": "SP004",
+        "name": "Sơn Dulux EasyClean",
+        "categoryId": "CAT02",
+        "price": 420000.0,
+        "stockQuantity": 100,
+        "minStockLevel": 30,
+        "maxStockLevel": 400
+    },
+    {
+        "id": "SP005",
+        "name": "Ống nhựa Tiền Phong D90",
+        "categoryId": "CAT03",
+        "price": 95000.0,
+        "stockQuantity": 150,
+        "minStockLevel": 50,
+        "maxStockLevel": 1000
+    },
+    {
+        "id": "SP006",
+        "name": "Đai ốc inox M8",
+        "categoryId": "CAT03",
+        "price": 1500.0,
+        "stockQuantity": 5000,
+        "minStockLevel": 1000,
+        "maxStockLevel": 20000
+    },
+    {
+        "id": "SP007",
+        "name": "Cát xây dựng",
+        "categoryId": "CAT01",
+        "price": 300000.0,
+        "stockQuantity": 80,
+        "minStockLevel": 20,
+        "maxStockLevel": 200
+    },
+    {
+        "id": "SP008",
+        "name": "Sơn lót chống kiềm Jotun",
+        "categoryId": "CAT02",
+        "price": 650000.0,
+        "stockQuantity": 45,
+        "minStockLevel": 15,
+        "maxStockLevel": 200
+    },
+    {
+        "id": "SP009",
+        "name": "Bản lề inox 304",
+        "categoryId": "CAT03",
+        "price": 45000.0,
+        "stockQuantity": 300,
+        "minStockLevel": 80,
+        "maxStockLevel": 1000
+    },
+    {
+        "id": "SP010",
+        "name": "Dây điện Trần Phú 2.5",
+        "categoryId": "CAT03",
+        "price": 850000.0,
+        "stockQuantity": 60,
+        "minStockLevel": 20,
+        "maxStockLevel": 300
+    },
+    {
+        "id": "SP011",
+        "name": "Que hàn Kim Tín",
+        "categoryId": "CAT03",
+        "price": 250000.0,
+        "stockQuantity": 120,
+        "minStockLevel": 40,
+        "maxStockLevel": 500
+    },
+    {
+        "id": "SP012",
+        "name": "Vít bắn tôn",
+        "categoryId": "CAT03",
+        "price": 800.0,
+        "stockQuantity": 8000,
+        "minStockLevel": 1500,
+        "maxStockLevel": 30000
+    },
+    {
+        "id": "SP013",
+        "name": "Sắt phi 16 Hòa Phát",
+        "categoryId": "CAT01",
+        "price": 220000.0,
+        "stockQuantity": 90,
+        "minStockLevel": 30,
+        "maxStockLevel": 300
     }
 ]

@@ -1,7 +1,7 @@
 import sys
 import os
 
-# Thêm thư mục gốc vào đường dẫn hệ thống để hỗ trợ import tuyệt đối
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.data_access.file_handler import FileHandler

@@ -201,6 +201,27 @@ def test_xnt_report():
     run_assert(r_sp001["tongXuat"] == 30, f"Tổng xuất trong kỳ: {r_sp001['tongXuat']} (kỳ vọng: 30)")
     run_assert(r_sp001["tonCuoi"] == 70, f"Tồn cuối ngày 7/6: {r_sp001['tonCuoi']} (kỳ vọng: 70)")
 
+    # Kiểm thử lỗi định dạng ngày không hợp lệ
+    try:
+        management_service.calculate_xnt("invalid-date", "2026-06-07")
+        run_assert(False, "Chấp nhận ngày bắt đầu không hợp lệ (Lỗi logic)")
+    except ValueError as e:
+        run_assert("Ngày bắt đầu không hợp lệ" in str(e), f"Ngăn chặn thành công ngày bắt đầu không hợp lệ: {e}")
+
+    try:
+        management_service.calculate_xnt("2026-06-05", "2026-13-45")
+        run_assert(False, "Chấp nhận ngày kết thúc không hợp lệ (Lỗi logic)")
+    except ValueError as e:
+        run_assert("Ngày kết thúc không hợp lệ" in str(e), f"Ngăn chặn thành công ngày kết thúc không hợp lệ: {e}")
+
+    # Kiểm thử lỗi ngày bắt đầu lớn hơn ngày kết thúc
+    try:
+        management_service.calculate_xnt("2026-06-08", "2026-06-07")
+        run_assert(False, "Chấp nhận ngày bắt đầu lớn hơn ngày kết thúc (Lỗi logic)")
+    except ValueError as e:
+        run_assert("không được lớn hơn" in str(e), f"Ngăn chặn thành công ngày bắt đầu lớn hơn ngày kết thúc: {e}")
+
+
 # Thực thi tất cả các test case
 test_add_category()
 test_import_stock()
