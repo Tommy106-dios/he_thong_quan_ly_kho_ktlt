@@ -11,7 +11,11 @@ class OutboundService:
         self.transaction_details = transaction_details
 
     def _generate_px_id(self):
-        """Sinh mã phiếu xuất tự tăng bắt đầu từ PX1001"""
+        """Đầu vào: self – Đối tượng OutboundService hiện tại.
+        Đầu ra: str – Mã phiếu xuất mới theo định dạng "PXxxxx" (ví dụ: "PX1001").
+        Mô tả chức năng: Tương tự _generate_pn_id() của InboundService nhưng dành cho phiếu xuất.
+            Duyệt giao dịch loại "XUAT" có tiền tố "PX", tìm số thứ tự lớn nhất rồi tăng thêm 1.
+        """
         max_num = 1000
         for t in self.transactions:
             if t.type == "XUAT" and t.id.startswith("PX"):
@@ -24,15 +28,25 @@ class OutboundService:
         return f"PX{max_num + 1}"
 
     def get_product(self, product_id):
-        """Lấy thông tin sản phẩm theo ID"""
+        """Đầu vào: self – Đối tượng OutboundService hiện tại.
+            product_id (str) – Mã sản phẩm cần tra cứu.
+        Đầu ra: Product | None – Đối tượng Product nếu tìm thấy, None nếu không tồn tại.
+        Mô tả chức năng: Tra cứu sản phẩm theo mã ID trong danh sách self.products,
+            sử dụng hàm next() với generator expression.
+            Được sử dụng bởi giao diện để kiểm tra tồn kho trước khi xuất.
+        """
         return next((p for p in self.products if p.id == product_id), None)
 
     def export_stock(self, receiver_or_note, user_id, items_data):
-        """
-        Thực hiện xuất kho danh sách hàng hóa
-        items_data: danh sách dict gồm:
-           - product_id
-           - quantity
+        """Đầu vào: receiver_or_note (str) – Người nhận hàng hoặc ghi chú cho phiếu xuất.
+            user_id (str) – Mã người dùng thực hiện xuất kho.
+            items_data (list[dict]) – Danh sách mặt hàng cần xuất,
+                mỗi phần tử gồm: product_id (str), quantity (int).
+        Đầu ra: str – Mã phiếu xuất kho vừa tạo (ví dụ: "PX1001").
+        Mô tả chức năng: Thực hiện quy trình xuất kho: sinh mã phiếu tự động, tạo Transaction
+            (loại "XUAT"), duyệt từng mặt hàng để kiểm tra tồn kho đủ hay không
+            (nếu không đủ, ném ValueError), trừ số lượng tồn kho, tạo TransactionDetail
+            với đơn giá lấy từ giá hiện tại của sản phẩm, và lưu toàn bộ thay đổi xuống file JSON.
         """
         tx_id = self._generate_px_id()
         created_date = datetime.now().isoformat()

@@ -15,12 +15,25 @@ class ManagementService:
 
     # 1. Cảnh báo tồn kho
     def get_stock_warnings(self):
+        """Đầu vào: self – Đối tượng ManagementService hiện tại.
+        Đầu ra: tuple(list[Product], list[Product]) – Bộ hai danh sách: danh sách sản phẩm có tồn kho
+            thấp hơn mức tối thiểu (low_stock) và danh sách sản phẩm vượt mức tối đa (overstock).
+        Mô tả chức năng: Duyệt toàn bộ danh sách sản phẩm, so sánh stock_quantity với min_stock_level
+            và max_stock_level để phân loại cảnh báo. Phục vụ chức năng giám sát tồn kho.
+        """
         low_stock = [p for p in self.products if p.stock_quantity < p.min_stock_level]
         overstock = [p for p in self.products if p.stock_quantity > p.max_stock_level]
         return low_stock, overstock
 
     # 2. Tìm kiếm sản phẩm theo Name/ID
     def search_products(self, keyword):
+        """Đầu vào: self – Đối tượng ManagementService hiện tại.
+            keyword (str) – Từ khóa tìm kiếm (theo mã hoặc tên sản phẩm).
+        Đầu ra: list[Product] – Danh sách sản phẩm có mã hoặc tên chứa từ khóa (không phân biệt hoa thường),
+            hoặc danh sách rỗng nếu từ khóa trống hoặc không tìm thấy.
+        Mô tả chức năng: Chuẩn hóa từ khóa về chữ thường, sau đó lọc danh sách sản phẩm bằng phép
+            so khớp chuỗi con (in) trên cả id và name. Hỗ trợ tìm kiếm linh hoạt, không phân biệt hoa/thường.
+        """
         kw = keyword.strip().lower()
         if not kw:
             return []
@@ -28,8 +41,14 @@ class ManagementService:
 
     # 3. Xem lịch sử nhập xuất
     def get_transaction_history(self, filter_type=None):
-        """
-        filter_type: "NHAP", "XUAT" hoặc None (hiển thị tất cả)
+        """Đầu vào: self – Đối tượng ManagementService hiện tại.
+            filter_type (str | None, optional) – Bộ lọc loại giao dịch: "NHAP", "XUAT",
+                hoặc None (hiển thị tất cả).
+        Đầu ra: list[Transaction] – Danh sách giao dịch đã lọc và sắp xếp theo ngày tạo giảm dần
+            (mới nhất lên đầu).
+        Mô tả chức năng: Lọc danh sách giao dịch theo loại (nếu có), sau đó sắp xếp kết quả
+            theo created_date giảm dần bằng sorted() với key=lambda. Cho phép xem toàn bộ
+            hoặc chỉ nhập/xuất.
         """
         filtered = self.transactions
         if filter_type in ("NHAP", "XUAT"):
@@ -59,6 +78,13 @@ class ManagementService:
 
     # 5. Thêm 1 danh mục mặt hàng mới
     def add_category(self, cat_id, name, description=""):
+        """Đầu vào: cat_id (str) – Mã danh mục mới.
+            name (str) – Tên danh mục.
+            description (str, optional) – Mô tả danh mục, mặc định là chuỗi rỗng.
+        Đầu ra: Category – Đối tượng Category vừa được tạo.
+        Mô tả chức năng: Kiểm tra trùng lặp mã danh mục bằng any(). Nếu trùng, ném ValueError.
+            Nếu không trùng, tạo đối tượng Category mới, thêm vào danh sách và lưu xuống file JSON.
+        """
         # Kiểm tra trùng lặp
         if any(c.id == cat_id for c in self.categories):
             raise ValueError(f"Mã danh mục {cat_id} đã tồn tại.")
@@ -70,6 +96,17 @@ class ManagementService:
 
     # 6. Báo cáo Xuất - Nhập - Tồn (XNT)
     def calculate_xnt(self, start_date_str, end_date_str):
+        """Đầu vào: start_date_str (str) – Ngày bắt đầu kỳ báo cáo, định dạng "YYYY-MM-DD".
+            end_date_str (str) – Ngày kết thúc kỳ báo cáo, định dạng "YYYY-MM-DD".
+        Đầu ra: list[dict] – Danh sách dictionary, mỗi phần tử chứa: "id", "name",
+            "tonDau" (tồn đầu kỳ), "tongNhap" (tổng nhập trong kỳ), "tongXuat" (tổng xuất trong kỳ),
+            "tonCuoi" (tồn cuối kỳ = tồn đầu + nhập − xuất).
+        Mô tả chức năng: Tính toán báo cáo Xuất–Nhập–Tồn cho từng sản phẩm trong khoảng thời gian
+            chỉ định. Validate định dạng ngày và kiểm tra ngày bắt đầu ≤ ngày kết thúc
+            (ném ValueError nếu vi phạm). Duyệt toàn bộ giao dịch, phân loại thành hai mốc:
+            giao dịch trước kỳ (tính tồn đầu kỳ) và giao dịch trong kỳ (tính tổng nhập/xuất).
+            Cuối cùng tổng hợp công thức: Tồn cuối = Tồn đầu + Tổng nhập − Tổng xuất.
+        """
         # Kiểm tra định dạng ngày không hợp lệ
         try:
             start_date = datetime.strptime(start_date_str, "%Y-%m-%d")

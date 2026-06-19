@@ -39,6 +39,13 @@ DEFAULT_TRANSACTION_DETAILS = [
 class FileHandler:
     """Tầng xử lý đọc/ghi cơ sở dữ liệu JSON vật lý"""
     def __init__(self, data_dir=None):
+        """Đầu vào: data_dir (str | None, optional) – Đường dẫn thư mục chứa các file JSON dữ liệu,
+            mặc định là None (sử dụng thư mục data/ tại gốc dự án).
+        Đầu ra: Không có giá trị trả về. Khởi tạo thuộc tính data_dir và tự động tạo thư mục nếu chưa tồn tại.
+        Mô tả chức năng: Xác định đường dẫn vật lý đến thư mục dữ liệu. Nếu data_dir không được truyền,
+            tự động tính toán dựa trên vị trí tương đối của file source code.
+            Tạo thư mục nếu chưa có bằng os.makedirs().
+        """
         if data_dir is None:
             base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             self.data_dir = os.path.join(base_dir, "data")
@@ -52,6 +59,14 @@ class FileHandler:
         return os.path.join(self.data_dir, filename)
 
     def _read_file(self, filename, default_data):
+        """Đầu vào: filename (str) – Tên file JSON cần đọc (ví dụ: "products.json").
+            default_data (list) – Dữ liệu mặc định được sử dụng nếu file chưa tồn tại hoặc lỗi đọc.
+        Đầu ra: list – Danh sách dictionary được phân tích từ file JSON,
+            hoặc default_data nếu file không tồn tại hoặc gặp lỗi.
+        Mô tả chức năng: Đọc nội dung file JSON theo đường dẫn. Nếu file chưa tồn tại, ghi dữ liệu
+            mặc định vào file mới rồi trả về. Nếu file bị lỗi hoặc rỗng, trả về dữ liệu mặc định.
+            Xử lý mã hóa UTF-8 cho tiếng Việt.
+        """
         path = self._get_path(filename)
         if not os.path.exists(path):
             self._write_file(filename, default_data)
@@ -64,6 +79,12 @@ class FileHandler:
             return default_data
 
     def _write_file(self, filename, data):
+        """Đầu vào: filename (str) – Tên file JSON cần ghi.
+            data (list) – Danh sách dictionary cần ghi xuống file.
+        Đầu ra: Không có giá trị trả về. Ghi dữ liệu xuống file JSON.
+        Mô tả chức năng: Ghi danh sách dictionary xuống file JSON với định dạng thụt lề 4 ký tự (indent=4),
+            hỗ trợ Unicode tiếng Việt (ensure_ascii=False). Bắt lỗi và in thông báo nếu ghi thất bại.
+        """
         path = self._get_path(filename)
         try:
             with open(path, 'w', encoding='utf-8') as f:
@@ -94,9 +115,20 @@ class FileHandler:
 
     # Products
     def load_products(self):
+        """Đầu vào: self – Đối tượng FileHandler hiện tại.
+        Đầu ra: list[Product] – Danh sách các đối tượng Product được tạo từ file products.json.
+        Mô tả chức năng: Đọc file products.json, chuyển đổi mỗi phần tử dictionary thành đối tượng Product
+            thông qua Product.from_dict(). Nếu file chưa tồn tại, tạo file mới với dữ liệu mẫu mặc định.
+        """
         return [Product.from_dict(d) for d in self._read_file("products.json", DEFAULT_PRODUCTS)]
 
     def save_products(self, products):
+        """Đầu vào: self – Đối tượng FileHandler hiện tại.
+            products (list[Product]) – Danh sách các đối tượng Product cần lưu.
+        Đầu ra: Không có giá trị trả về. Ghi dữ liệu xuống file products.json.
+        Mô tả chức năng: Chuyển đổi mỗi đối tượng Product thành dictionary qua to_dict(),
+            sau đó ghi toàn bộ danh sách xuống file JSON.
+        """
         self._write_file("products.json", [p.to_dict() for p in products])
 
     # Transactions

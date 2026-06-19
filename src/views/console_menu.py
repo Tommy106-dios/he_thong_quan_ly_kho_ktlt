@@ -17,7 +17,12 @@ class ConsoleMenu:
         self.current_user = None
 
     def login(self):
-        """Đăng nhập hệ thống"""
+        """Đầu vào: self – Đối tượng ConsoleMenu hiện tại.
+        Đầu ra: Không có giá trị trả về. Gán đối tượng User hợp lệ vào self.current_user.
+        Mô tả chức năng: Hiển thị giao diện đăng nhập, yêu cầu nhập username và password.
+            So khớp thông tin với danh sách users bằng next() và generator expression.
+            Lặp lại cho đến khi đăng nhập thành công, in thông báo lỗi nếu sai.
+        """
         print("--- ĐĂNG NHẬP WMS ---")
         while not self.current_user:
             u, p = input("Username: ").strip(), input("Password: ").strip()
@@ -28,6 +33,12 @@ class ConsoleMenu:
                 print("❌ Sai Username/Password. Thử lại.")
 
     def run(self):
+        """Đầu vào: self – Đối tượng ConsoleMenu hiện tại.
+        Đầu ra: Không có giá trị trả về. Chạy vòng lặp menu chính cho đến khi người dùng chọn thoát.
+        Mô tả chức năng: Gọi login() để xác thực, sau đó hiển thị menu 8 chức năng trong vòng lặp
+            while True. Sử dụng dictionary ánh xạ phím chọn ('1'–'8') sang phương thức xử lý
+            tương ứng. Thoát khi người dùng nhập '0'.
+        """
         self.login()
         actions = {
             '1': self.menu_import_stock, '2': self.menu_export_stock,
@@ -60,6 +71,12 @@ class ConsoleMenu:
 
     # 1. Nhập kho
     def menu_import_stock(self):
+        """Đầu vào: self – Đối tượng ConsoleMenu hiện tại.
+        Đầu ra: Không có giá trị trả về. In kết quả thao tác (thành công/thất bại) lên console.
+        Mô tả chức năng: Giao diện nhập kho: yêu cầu mã nhà cung cấp, sau đó lặp nhập từng mặt hàng
+            (mã SP, số lượng, đơn giá). Nếu sản phẩm chưa tồn tại, yêu cầu nhập thêm thông tin
+            bổ sung (tên, danh mục, mức tồn min/max). Gọi InboundService.import_stock() để xử lý nghiệp vụ.
+        """
         print("\n--- NHẬP KHO ---")
         supplier_id = input("Mã nhà cung cấp: ").strip()
         items = []
@@ -95,6 +112,12 @@ class ConsoleMenu:
 
     # 2. Xuất kho
     def menu_export_stock(self):
+        """Đầu vào: self – Đối tượng ConsoleMenu hiện tại.
+        Đầu ra: Không có giá trị trả về. In kết quả thao tác lên console.
+        Mô tả chức năng: Giao diện xuất kho: yêu cầu thông tin người nhận, sau đó lặp nhập từng mặt hàng.
+            Kiểm tra sản phẩm tồn tại và đủ tồn kho trước khi thêm vào danh sách.
+            Gọi OutboundService.export_stock() để xử lý, bắt lỗi ValueError nếu không đủ hàng.
+        """
         print("\n--- XUẤT KHO ---")
         receiver = input("Người nhận / Ghi chú: ").strip()
         items = []
@@ -189,6 +212,13 @@ class ConsoleMenu:
 
     # 8. Báo cáo XNT
     def menu_xnt_report(self):
+        """Đầu vào: self – Đối tượng ConsoleMenu hiện tại.
+        Đầu ra: Không có giá trị trả về. In bảng báo cáo Xuất–Nhập–Tồn lên console.
+        Mô tả chức năng: Giao diện báo cáo XNT: yêu cầu nhập ngày bắt đầu và kết thúc
+            (định dạng YYYY-MM-DD), gọi ManagementService.calculate_xnt() để tính toán,
+            sau đó hiển thị kết quả dạng bảng gồm: Mã SP, Tên, Tồn đầu, Nhập, Xuất, Tồn cuối.
+            Bắt lỗi ngoại lệ nếu định dạng ngày không hợp lệ.
+        """
         print("\n--- BÁO CÁO XUẤT NHẬP TỒN ---")
         start, end = input("Ngày bắt đầu (YYYY-MM-DD): ").strip(), input("Ngày kết thúc (YYYY-MM-DD): ").strip()
         try:
